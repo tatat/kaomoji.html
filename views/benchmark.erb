@@ -1,0 +1,156 @@
+<!DOCTYPE HTML>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>顔文字表示速度測定</title>
+<link type="text/css" rel="stylesheet" href="/stylesheets/html5reset-1.6.1.css" />
+<style type="text/css">
+	body {
+		font-family: "ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro", Osaka, "メイリオ", Meiryo, "ＭＳ Ｐゴシック", sans-serif;
+		line-height: 1.6em;
+	}
+	ul {
+		list-style-type: none;
+	}
+	#doc {
+		padding: 1em;
+	}
+	h1 {
+		font-size: 2em;
+		line-height: 1.6em;
+		word-wrap: break-word;
+		word-break: break-all;
+		margin-bottom: 1em;
+	}
+	p {
+		margin: 1em 0;
+	}
+	ul#kaomoji li {
+		padding: 0.3em 0;
+	}
+	ul#kaomoji li > * {
+		vertical-align: middle;;
+	}
+	.progress {
+		font-weight: bold;
+	}
+	.result {
+		margin-right: 1em;
+		display: inline-block;
+		padding: 0.3em;
+		border: 1px solid #000;
+		font-size: 0.9em;
+		min-width: 4em;
+	}
+	.slow .result {
+		color: #800;
+		font-weight: bold;
+	}
+</style>
+<script type="text/javascript" src="/javascripts/jquery-1.8.2.min.js"></script>
+<script type="text/javascript">
+!function(records) {
+	var kaomoji = {
+		records: records
+	};
+
+	kaomoji.benchmark = function(onprepare, onprogress, oncomplete) {
+		var   items = this.records.slice(0)
+			, result = {}
+			, total = items.length
+			, count = 0
+			, onprogress
+			, oncomplete
+			, before
+			, time;
+
+		setTimeout(function wrapper() {
+			if (before)
+				before.end = Date.now();
+
+			if (items.length === 0) {
+				oncomplete(result);
+				return;
+			}
+
+			var item = items.shift();
+
+			onprepare(function(options) {
+				setTimeout(function() {
+					setTimeout(wrapper, 0);
+					onprogress(options);
+
+					result[item.id] = before = {
+						  item: item
+						, start: Date.now()
+						, end: null
+					};
+				}, 0);
+			}, item, ++ count, total);
+		}, 0);
+	};
+
+	$(function() {
+		var   $container = $('ul#kaomoji')
+			, $progress = $('.progress');
+
+		kaomoji.benchmark(function(next, item, current, total) {
+			var $item = $('<span/>');
+
+			$progress.text(Math.round(current / total * 100) + '%');
+
+			$container.append(
+				$('<li/>').attr('data-id', item.id)
+					.append($item)
+			);
+
+			next({$item: $item, text: item.text});
+		}, function(options) {
+			options.$item.text(options.text);
+		}, function(result) {
+			var items = [];
+
+			$container.find('li').each(function() {
+				var   $this = $(this)
+					, r = result[$this.attr('data-id')]
+					, ms;
+
+				if (!r) return;
+
+				if ((ms = r.end - r.start) >= 30)
+					$this.addClass('slow');
+
+				$this.attr('data-result', ms)
+					.prepend(
+						$('<span/>').addClass('result')
+							.text(ms + 'ms')
+					);
+
+				items.push({
+					  $item: $this
+					, result: ms
+				});
+			});
+
+			items.sort(function(a, b) {
+				return b.result - a.result;
+			}).forEach(function(item) {
+				$container.append(item.$item);
+			});
+		});
+	});
+}(<%= records_json %>)
+</script>
+</head>
+<body>
+	<div id="doc">
+		<h1>顔文字表示速度測定</h1>
+		<p>
+			MacのSafariやGoogle ChromeとかiPhoneとかでものすごい表示に時間のかかる顔文字があったので大体の速度測ってみますね。<br />
+			（実行時の状態に左右されるのであくまで目安です。何回か試すといいです。）
+		</p>
+		<p><span class="progress"></span></p>
+		<ul id="kaomoji"></ul>
+	</div>
+</body>
+</html>

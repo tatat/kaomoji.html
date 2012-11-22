@@ -1,0 +1,11 @@
+.DS_Store
+/config/*.yml
+/log
+!/log/.gitkeep
+/tmp/pids
+!/tmp/pids/.gitkeep
+/db
+!/db/.gitkeep
+/.bundle
+/vendor/bundle
+/Gemfile.lock

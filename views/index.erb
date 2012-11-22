@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=640" />
+<title>
+	<% if options[:filter].length == 0 %>
+		TLで集めた顔文字とか<%= records.length %>個。
+	<% else %>
+		TLで集めた顔文字とかの中から「<%= h options[:filter] %>」が含まれるもの<%= records.length %>個。
+	<% end %>
+</title>
+<link type="text/css" rel="stylesheet" href="/stylesheets/html5reset-1.6.1.css" />
+<link type="text/css" rel="stylesheet" href="/stylesheets/index.css" />
+<script type="text/javascript" src="/javascripts/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="/javascripts/index.js"></script>
+</head>
+<body>
+<noscript><style type="text/css">span.kaomoji { display:block} h1 span.loading, #select {display:none;} </style></noscript>
+<header>
+<h1>
+	<a href="<%= h options[:path] %>">
+		<% if options[:filter].length == 0 %>
+			TLで集めた顔文字とか<%= records.length %>個。
+		<% else %>
+			TLで集めた顔文字とかの中から「<%= h options[:filter] %>」が含まれるもの<%= records.length %>個。
+		<% end %>
+	</a>
+	<span class="loading">（ちょっと待って読み込み中.. <span class="progress"></span>）</span>
+</h1>
+<p>最終更新日：<%= modified.strftime('%Y-%m-%d %H:%M:%S') %></p>
+<form id="filter" action="<%= h options[:path] %>">
+	<input name="filter" type="text" value="<%= h options[:filter] %>" placeholder="使えない文字がありますが察してください。">
+	<input type="submit" value="フィルター">
+</form>
+</header>
+<article id="kaomoji">
+<a href="#" id="select">Get!</a>
+<ul><% records.each do |record| %><li><span class="kaomoji"><%= h(record.text.force_encoding("utf-8")).gsub(/ /, '&nbsp;') %></span></li><% end %></ul>
+</article>
+<article id="kaomoji-selected">
+<p>コピペとか！そういうやつ！</p>
+<textarea name="selected" id="selected" cols="30" rows="10" wrap="off"></textarea>
+<p><a href="#" id="back">Back!</a></p>
+</article>
+</body>
+</html>
