@@ -12,10 +12,23 @@ body {
 }
 a {
 	text-decoration: none;
+	color: #888;
+}
+a:hover {
+	text-decoration: none;
+	color: #eee;
 }
 h1 a {
 	color: #ddd;
 	text-decoration: none;
+}
+a.readme {
+	font-size: 0.5em;
+	line-height: 1em;
+	position: absolute;
+	left: 1em;
+	bottom: 0.5em;
+	display: block;
 }
 span.kaomoji {
 	color: #333;
@@ -41,6 +54,7 @@ header {
 	color: #ddd;
 	padding: 0 0.5em;
 	background-color: #333;
+	position: relative;
 }
 header > h1,
 header > p {
