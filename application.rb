@@ -228,10 +228,6 @@ class Application < Sinatra::Base
     end
   end
 
-  ['/:id.:format', '/:id'].each do |route|
-  
-  end
-
   # error
   
   not_found do
