@@ -5,5 +5,3 @@ gem 'data_mapper'
 gem 'dm-sqlite-adapter'
 gem 'dm-pager'
 gem 'unicorn'
-gem 'dm-pagination'
-
