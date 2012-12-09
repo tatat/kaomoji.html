@@ -14,8 +14,8 @@ require 'models/kaomoji'
 class Application < Sinatra::Base
 
   configure do
-    set :config_dir, File.join(APP_ROOT, 'config')
-    set :db, 'sqlite3://' + File.join(APP_ROOT, 'db', "#{settings.environment.to_s}.sqlite3")
+    set :config_dir, File.join(settings.root, 'config')
+    set :db, 'sqlite3://' + File.join(settings.root, 'db', "#{settings.environment.to_s}.sqlite3")
     set :basic_authentication, YAML.load_file(File.join(settings.config_dir, 'basic_authentication.yml'))
 
     DataMapper::Model.raise_on_save_failure = true
