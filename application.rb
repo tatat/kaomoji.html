@@ -8,6 +8,7 @@ require 'erb'
 require 'dm-core'
 require 'dm-migrations'
 require 'dm-aggregates'
+require 'dm-pager'
 require 'models/kaomoji'
 
 class Application < Sinatra::Base
@@ -125,95 +126,110 @@ class Application < Sinatra::Base
     }
   end
   
-  ['/', '/kaomoji.:format'].each do |route|
-    get route do
-      allow_origin!
+  get %r{^(?:/|/(pagination|kaomoji)(?:\.(.+)))$} do |type, format|
+    allow_origin!
 
-      query = {}
+    query = {order: :id.desc}
+    
+    options = {
+      query: request.env['rack.request.query_hash'],
+      path: request.path,
+      fullpath: request.fullpath,
+      filter: ''
+    }
 
-      options = {
-        path: request.path,
-        filter: ''
+    if params[:filter].is_a?(String) && !(/^([_%]+)?$/ =~ params[:filter])
+      # DataMapperでSQLiteのLIKEのエスケープどうやるの..
+      options[:filter] = params[:filter]
+      query[:text.like] = "%#{params[:filter]}%"
+    end
+
+    if params[:since].is_a?(String) && /^[0-9]+$/ =~ params[:since]
+      options[:since] = query[:created_at.gt] = Time.at(params[:since].to_i)
+    end
+
+    is_pagination = type.nil? || type == 'pagination'
+
+    pagination_params = {
+      page: params[:page],
+      per_page: params[:per_page] || 200
+    }
+
+    records = Kaomoji.all(query)
+
+    case format
+    when 'html', nil
+      locals = {
+        options: options,
+        modified: Kaomoji.max(:created_at).to_time
       }
 
-      if params[:filter].is_a?(String) && !(/^([_%]+)?$/ =~ params[:filter])
-        # DataMapperでSQLiteのLIKEのエスケープどうやるの..
-        options[:filter] = params[:filter]
-        query[:text.like] = "%#{params[:filter]}%"
-      end
-
-      if params[:since].is_a?(String) && /^[0-9]+$/ =~ params[:since]
-        options[:since] = query[:created_at.gt] = Time.at(params[:since].to_i)
-      end
-
-      case params[:format]
-      when 'html', nil
-        query[:order] = [:text.asc]
-
-        erb :index, :layout => false, :locals => {
-          options: options,
-          modified: Kaomoji.max(:created_at).to_time,
-          records: Kaomoji.all(query)
-        }
-      when 'json'
-        _records = Kaomoji.all(query)
-
-        records = if is_true? params[:include_created_at]
-          _records.map {|record| kaomoji_format_for_json_include_created_at record }
-        else
-          _records.map {|record| kaomoji_format_for_json record }
-        end
-
-        respond_to_json({
-          modified: Kaomoji.max(:created_at).to_time.to_i,
-          records: records
-        })
-      when 'txt', 'text'
-        query[:order] = [:text.asc]
-        content_type :text
-
-        Kaomoji.all(query).map {|record|
-          record.text.force_encoding("utf-8")
-        }.join("\n")
+      if is_pagination
+        locals[:records] = records.page(pagination_params)
+        erb :pagination, :layout => false, :locals => locals
       else
-        raise Sinatra::NotFound
+        locals[:records] = records
+        erb :index, :layout => false, :locals => locals
       end
+    when 'json'
+      result = {modified: Kaomoji.max(:created_at).to_time.to_i}
+
+      if is_pagination
+        records = records.page(pagination_params)
+        result.merge!({
+          current: records.pager.current_page,
+          total: records.pager.total_pages
+        })
+      end
+
+      format_fn = is_true?(params[:include_created_at]) ?
+        Proc.new { |record| kaomoji_format_for_json_include_created_at record } :
+        Proc.new { |record| kaomoji_format_for_json record }
+
+      result[:records] = records.map(&format_fn)
+      respond_to_json(result)
+    when 'txt', 'text'
+      content_type :text
+      records = records.page(pagination_params) if is_pagination
+      records.map {|record| record.text.force_encoding("utf-8") }.join("\n")
+    else
+      raise Sinatra::NotFound
+    end
+  end
+
+  get %r{^/([^/]+)(?:\.(.+))$} do |id, format|
+    allow_origin!
+
+    record = case id
+    when 'random'
+      Kaomoji.first(offset: rand(Kaomoji.count))
+    else
+      Kaomoji.get(id)
+    end
+    
+    case format
+    when 'html', nil
+      raise Sinatra::NotFound if record.nil?
+      erb :single, :layout => false, :locals => {record: record}
+    when 'json'
+      halt 404, respond_to_json({error: 'not found'}) if record.nil?
+
+      format_method = is_true?(params[:include_created_at]) ?
+        :kaomoji_format_for_json_include_created_at :
+        :kaomoji_format_for_json
+
+      respond_to_json({record: send(format_method, record)})
+    when 'txt', 'text'
+      content_type :text
+      halt 404, 'not found' if record.nil?
+      record.text.force_encoding("utf-8")
+    else
+      raise Sinatra::NotFound
     end
   end
 
   ['/:id.:format', '/:id'].each do |route|
-    get route do
-      allow_origin!
-
-      record = case params[:id]
-      when 'random'
-        Kaomoji.first(offset: rand(Kaomoji.count))
-      else
-        Kaomoji.get(params[:id])
-      end
-      
-      case params[:format]
-      when 'html', nil
-        raise Sinatra::NotFound if record.nil?
-        erb :single, :layout => false, :locals => {record: record}
-      when 'json'
-        halt 404, respond_to_json({error: 'not found'}) if record.nil?
-
-        record = if is_true? params[:include_created_at]
-          kaomoji_format_for_json_include_created_at record
-        else
-          kaomoji_format_for_json record
-        end
-
-        respond_to_json({record: record})
-      when 'txt', 'text'
-        content_type :text
-        halt 404, 'not found' if record.nil?
-        record.text.force_encoding("utf-8")
-      else
-        raise Sinatra::NotFound
-      end
-    end
+  
   end
 
   # error
