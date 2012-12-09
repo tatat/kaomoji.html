@@ -130,13 +130,7 @@ class Application < Sinatra::Base
     allow_origin!
 
     query = {order: :id.desc}
-    
-    options = {
-      query: request.env['rack.request.query_hash'],
-      path: request.path,
-      fullpath: request.fullpath,
-      filter: ''
-    }
+    options = {filter: ''}
 
     if params[:filter].is_a?(String) && !(/^([_%]+)?$/ =~ params[:filter])
       # DataMapperでSQLiteのLIKEのエスケープどうやるの..
