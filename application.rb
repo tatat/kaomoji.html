@@ -126,7 +126,7 @@ class Application < Sinatra::Base
     }
   end
   
-  get %r{^(?:/|/(pagination|kaomoji)(?:\.(.+)))$} do |type, format|
+  get %r{^(?:/|/(pagination|kaomoji)(?:\.([^/]+))?)$} do |type, format|
     allow_origin!
 
     query = {order: :id.desc}
@@ -197,7 +197,7 @@ class Application < Sinatra::Base
     end
   end
 
-  get %r{^/([^/]+)(?:\.(.+))$} do |id, format|
+  get %r{^/([^/\.]+)(?:\.([^/]+))?$} do |id, format|
     allow_origin!
 
     record = case id
