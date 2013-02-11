@@ -106,7 +106,7 @@ class Application < Sinatra::Base
     end
   end
 
-  delete %r{^/delete/(.+?)(?:\.json)?$} do
+  delete %r{^/([0-9]+?)(?:\.json)?$} do
     protected!
     allow_origin!
 
