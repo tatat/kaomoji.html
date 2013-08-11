@@ -47,6 +47,7 @@ span.kaomoji {
 	word-wrap: break-word;
 	word-break: break-all;
 	background: #fff;
+	font-family: Helvetica;
 }
 span.kaomoji.active {
 	display: block;
