@@ -1,19 +1,19 @@
 span.kaomoji {
-	display: block;
+  display: block;
 }
 .pager {
-	background-color: #d8d8d8;
-	text-align: center;
+  background-color: #d8d8d8;
+  text-align: center;
 }
 .pager a {
-	color: #333;
+  color: #333;
 }
 .pager a:hover {
-	color: #888;
+  color: #888;
 }
 .pager .active a {
-	color: #fff;
+  color: #fff;
 }
 .pager li {
-	padding: 0 0.3em;
+  padding: 0 0.3em;
 }

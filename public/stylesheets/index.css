@@ -1,156 +1,156 @@
 body,
 textarea,
 input[type="text"] {
-	font-family: "ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro", Osaka, "メイリオ", Meiryo, "ＭＳ Ｐゴシック", sans-serif;
+  font-family: "ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro", Osaka, "メイリオ", Meiryo, "ＭＳ Ｐゴシック", sans-serif;
 }
 body {
-	color: #333;
-	font-size: 2em;
-	line-height: 2em;
-	background: #f8f8f8;
-	-webkit-text-size-adjust: none;
+  color: #333;
+  font-size: 2em;
+  line-height: 2em;
+  background: #f8f8f8;
+  -webkit-text-size-adjust: none;
 }
 a {
-	text-decoration: none;
-	color: #888;
+  text-decoration: none;
+  color: #888;
 }
 a:hover {
-	text-decoration: none;
-	color: #eee;
+  text-decoration: none;
+  color: #eee;
 }
 h1 a {
-	color: #ddd;
-	text-decoration: none;
+  color: #ddd;
+  text-decoration: none;
 }
 ul.menu {
-	position: absolute;
-	left: 1em;
-	bottom: 0.5em;
-	display: block;
-	font-size: 0.5em;
-	line-height: 1em;
+  position: absolute;
+  left: 1em;
+  bottom: 0.5em;
+  display: block;
+  font-size: 0.5em;
+  line-height: 1em;
 }
 ul.menu li {
-	display: inline-block;
+  display: inline-block;
 }
 ul.menu li + li {
-	margin-left: 0.5em;
+  margin-left: 0.5em;
 }
 ul.menu a {
 
 }
 span.kaomoji {
-	color: #333;
-	padding: 0.2em 0.5em;
-	display: none;
-	margin: 0.05em;
-	word-wrap: break-word;
-	word-break: break-all;
-	background: #fff;
-	font-family: Helvetica;
+  color: #333;
+  padding: 0.2em 0.5em;
+  display: none;
+  margin: 0.05em;
+  word-wrap: break-word;
+  word-break: break-all;
+  background: #fff;
+  font-family: Helvetica;
 }
 span.kaomoji.active {
-	display: block;
+  display: block;
 }
 /* class指定じゃないとiPhoneうまく動かなかったなんで！ */
 span.kaomoji.selected, span[data-selected="true"].kaomoji {
-	background-color: #88aadd;
+  background-color: #88aadd;
 }
 /* これのせいでiPhoneものすごく重くなる */
 /*span[data-selected="false"].kaomoji:hover {
-	background-color: #f0f0f0;
+  background-color: #f0f0f0;
 }*/
 header {
-	color: #ddd;
-	padding: 0 0.5em;
-	background-color: #333;
-	position: relative;
+  color: #ddd;
+  padding: 0 0.5em;
+  background-color: #333;
+  position: relative;
 }
 header > h1,
 header > p {
-	margin-right: 1em;
-	line-height: 1.2em;
+  margin-right: 1em;
+  line-height: 1.2em;
 }
 header > h1 {
-	padding: 0.5em 0;
+  padding: 0.5em 0;
 }
 header > p {
-	font-size: 0.6em;
+  font-size: 0.6em;
 }
 #kaomoji > ul > li {
-	display: inline-block;
+  display: inline-block;
 }
 #filter {
-	text-align: right;
+  text-align: right;
 }
 #filter input[type="text"],
 #filter input[type="submit"] {
-	font-size: 0.4em;
-	padding: 0.3em 0.5em;
+  font-size: 0.4em;
+  padding: 0.3em 0.5em;
 
-	-webkit-border-radius: 2px;
-	-khtml-border-radius: 2px;
-	-moz-border-radius: 2px;
-	-o-border-radius: 2px;
-	-ms-border-radius: 2px;
-	border-radius: 2px;
+  -webkit-border-radius: 2px;
+  -khtml-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -o-border-radius: 2px;
+  -ms-border-radius: 2px;
+  border-radius: 2px;
 }
 #filter input[type="text"] {
-	border: 1px solid #eee;
-	width: 24em;
+  border: 1px solid #eee;
+  width: 24em;
 }
 #filter input[type="text"]:focus {
-	background-color: #ffd;
+  background-color: #ffd;
 }
 #filter input[type="submit"] {
-	background-color: #ddd;
-	border: 1px solid #eee;
-	font-weight: bold;
+  background-color: #ddd;
+  border: 1px solid #eee;
+  font-weight: bold;
 }
 #filter input[type="submit"]:hover,
 #filter input[type="submit"]:active {
-	background-color: #eee;
-	border: 1px solid #fff;
+  background-color: #eee;
+  border: 1px solid #fff;
 }
 #select {
-	padding: 0 0.5em;
-	display: block;
-	position: fixed;
-	right: 0;
-	bottom: 0;
-	background-color: rgba(0, 0, 0, 0.6);
-	color: #fff;
-	-webkit-border-top-left-radius: 0.5em;
-	-khtml-border-top-left-radius: 0.5em;
-	-moz-border-radius-topleft: 0.5em;
-	-o-border-top-left-radius: 0.5em;
-	-ms-border-top-left-radius: 0.5em;
-	border-top-left-radius: 0.5em;
+  padding: 0 0.5em;
+  display: block;
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  -webkit-border-top-left-radius: 0.5em;
+  -khtml-border-top-left-radius: 0.5em;
+  -moz-border-radius-topleft: 0.5em;
+  -o-border-top-left-radius: 0.5em;
+  -ms-border-top-left-radius: 0.5em;
+  border-top-left-radius: 0.5em;
 }
 #select:hover {
-	background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.8);
 }
 #kaomoji-selected {
-	display: none;
+  display: none;
 }
 #kaomoji-selected p {
-	text-align: center;
+  text-align: center;
 }
 #selected {
-	width: 90%;
-	min-height: 600px;
-	font-size: 0.5em;
-	display: block;
-	border: 1px solid #666;
-	background-color: #f8f8f8;
-	margin: 0 auto;
-	-webkit-border-radius: 0.5em;
-	-khtml-border-radius: 0.5em;
-	-moz-border-radius: 0.5em;
-	-o-border-radius: 0.5em;
-	-ms-border-radius: 0.5em;
-	border-radius: 0.5em;
+  width: 90%;
+  min-height: 600px;
+  font-size: 0.5em;
+  display: block;
+  border: 1px solid #666;
+  background-color: #f8f8f8;
+  margin: 0 auto;
+  -webkit-border-radius: 0.5em;
+  -khtml-border-radius: 0.5em;
+  -moz-border-radius: 0.5em;
+  -o-border-radius: 0.5em;
+  -ms-border-radius: 0.5em;
+  border-radius: 0.5em;
 }
 #back {
-	color: #666;
+  color: #666;
 }

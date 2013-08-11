@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=640" />
 <title>
 <% if options[:filter].length == 0 %>
-	TLで集めた顔文字とか<%= records.pager.total %>個<%= records.pager.current_page %>/<%= records.pager.total_pages %>ページ目。
+  TLで集めた顔文字とか<%= records.pager.total %>個<%= records.pager.current_page %>/<%= records.pager.total_pages %>ページ目。
 <% else %>
-	TLで集めた顔文字とかの中から「<%= h options[:filter] %>」が含まれるもの<%= records.pager.total %>個<%= records.pager.current_page %>/<%= records.pager.total_pages %>ページ目。
+  TLで集めた顔文字とかの中から「<%= h options[:filter] %>」が含まれるもの<%= records.pager.total %>個<%= records.pager.current_page %>/<%= records.pager.total_pages %>ページ目。
 <% end %>
 </title>
 <link type="text/css" rel="stylesheet" href="/stylesheets/html5reset-1.6.1.css" />
@@ -17,23 +17,23 @@
 <body>
 <header>
 <h1>
-	<a href="/">
-		<% if options[:filter].length == 0 %>
-			TLで集めた顔文字とか<%= records.pager.total %>個<%= records.pager.current_page %>/<%= records.pager.total_pages %>ページ目。
-		<% else %>
-			TLで集めた顔文字とかの中から「<%= h options[:filter] %>」が含まれるもの<%= records.pager.total %>個<%= records.pager.current_page %>/<%= records.pager.total_pages %>ページ目。
-		<% end %>
-	</a>
+  <a href="/">
+    <% if options[:filter].length == 0 %>
+      TLで集めた顔文字とか<%= records.pager.total %>個<%= records.pager.current_page %>/<%= records.pager.total_pages %>ページ目。
+    <% else %>
+      TLで集めた顔文字とかの中から「<%= h options[:filter] %>」が含まれるもの<%= records.pager.total %>個<%= records.pager.current_page %>/<%= records.pager.total_pages %>ページ目。
+    <% end %>
+  </a>
 </h1>
 <p>最終更新日：<%= modified.strftime('%Y-%m-%d %H:%M:%S') %></p>
 <form id="filter" action="<%= h request.path %>">
-	<input name="filter" type="text" value="<%= h options[:filter] %>" placeholder="使えない文字がありますが察してください。">
-	<input type="submit" value="フィルター">
+  <input name="filter" type="text" value="<%= h options[:filter] %>" placeholder="使えない文字がありますが察してください。">
+  <input type="submit" value="フィルター">
 </form>
 <ul class="menu">
-	<li><a class="readme" target="_blank" href="https://github.com/tatat/kaomoji.html/blob/master/README.md">README</a></li>
-	<li><a href="/kaomoji.html">ALL</a></li>
-	<li><a href="http://www.amazon.co.jp/registry/wishlist/EJAH0HHANJ5/ref=cm_sw_r_tw_ws_jY7hrb12Y2ABC" target="_blank">欲しい</a></li>
+  <li><a class="readme" target="_blank" href="https://github.com/tatat/kaomoji.html/blob/master/README.md">README</a></li>
+  <li><a href="/kaomoji.html">ALL</a></li>
+  <li><a href="http://www.amazon.co.jp/registry/wishlist/EJAH0HHANJ5/ref=cm_sw_r_tw_ws_jY7hrb12Y2ABC" target="_blank">欲しい</a></li>
 </ul>
 </header>
 <article id="kaomoji">
